@@ -38,7 +38,6 @@
             label3 = new Label();
             label4 = new Label();
             sendBtn = new Button();
-            stopServerbtn = new Button();
             SuspendLayout();
             // 
             // messsageTextBox
@@ -48,6 +47,7 @@
             messsageTextBox.Size = new Size(425, 93);
             messsageTextBox.TabIndex = 0;
             messsageTextBox.Text = "";
+            messsageTextBox.Enabled = false;
             // 
             // startServerbtn
             // 
@@ -83,6 +83,7 @@
             keyTextBox.Size = new Size(425, 145);
             keyTextBox.TabIndex = 4;
             keyTextBox.Text = "";
+            keyTextBox.Enabled = false;
             // 
             // signatureTextBox
             // 
@@ -129,21 +130,11 @@
             sendBtn.UseVisualStyleBackColor = true;
             sendBtn.Click += sendBtn_Click;
             // 
-            // stopServerbtn
-            // 
-            stopServerbtn.Location = new Point(702, 339);
-            stopServerbtn.Name = "stopServerbtn";
-            stopServerbtn.Size = new Size(75, 23);
-            stopServerbtn.TabIndex = 10;
-            stopServerbtn.Text = "Stop Server";
-            stopServerbtn.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(stopServerbtn);
             Controls.Add(sendBtn);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -177,6 +168,5 @@
         private Label label3;
         private Label label4;
         private Button sendBtn;
-        private Button stopServerbtn;
     }
 }

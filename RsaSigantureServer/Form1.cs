@@ -15,7 +15,6 @@ namespace RsaSigantureServer
 
         private async void startServerbtn_Click(object sender, EventArgs e)
         {
-            CancellationTokenSource cts = new CancellationTokenSource();
 
             infoTextBox.Text = "Server running...\n";
             IPHostEntry ipHostInfo = await Dns.GetHostEntryAsync(Dns.GetHostName());
@@ -69,11 +68,6 @@ namespace RsaSigantureServer
                                 await handler.SendAsync(echoBytes, 0);
                                 infoTextBox.Text += $"Socket server sent acknowledgment: \"{ackMessage}\"\n";
 
-                                if (response.Replace(eom, "").StartsWith("S@"))
-                                {
-                                    cts.Cancel();
-                                    infoTextBox.Text += "Stopping server...\n";
-                                }
                                 break;
                             }
                         }
@@ -87,7 +81,7 @@ namespace RsaSigantureServer
                     {
                         handler.Dispose();
                     }
-                }, cts.Token);
+                });
             }
         }
 
@@ -97,13 +91,14 @@ namespace RsaSigantureServer
             using Socket client = await SendMessage("M@" + messsageTextBox.Text);
             using Socket client3 = await SendMessage("K@" + keyTextBox.Text);
             using Socket client4 = await SendMessage("S@" + signatureTextBox.Text);
+
         }
 
         private async Task<Socket> SendMessage(String messageText)
         {
             IPHostEntry ipHostInfo = await Dns.GetHostEntryAsync(Dns.GetHostName());
             IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint ipEndPoint = new(ipAddress, 11_000);
+            IPEndPoint ipEndPoint = new(ipAddress, 11_001);
             Socket client = new(
                                     ipEndPoint.AddressFamily,
                                     SocketType.Stream,
@@ -128,9 +123,6 @@ namespace RsaSigantureServer
                         $"Socket client received acknowledgment: \"{response}\"");
                     break;
                 }
-                // Sample output:
-                //     Socket client sent message: "Hi friends 👋!<|EOM|>"
-                //     Socket client received acknowledgment: "<|ACK|>"
             }
 
             client.Shutdown(SocketShutdown.Both);
